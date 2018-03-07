@@ -1,0 +1,42 @@
+/*
+	查找的资料
+	CStringW strw = _T("test");
+	CStringA stra(strw.GetBuffer(0));
+	strw.ReleaseBuffer();
+
+	std::string imgpath=stra.GetBuffer(0);
+	stra.ReleaseBuffer();
+	*/
+
+	/*ifstream fin;
+	fin.open("Name.txt");
+	char buf[80] = {'\0'};
+	fin >> buf;
+	fin.close();
+	CString STemp ;
+	STemp.Format(_T("%s"),buf);
+	STemp = buf;
+	MessageBox(STemp);
+	MessageBox(_T("注册成功"),_T("提示"));
+	*/
+
+	/*
+	查找的资料
+	LPTSTR p = _T("This is a test");
+    CString theString = chArray;
+    theString.Format(_T("%s"), chArray);
+    theString = p; 
+	*/
+
+	/*try
+	{
+	CStdioFile file;
+	file.Open(_T("E:\\Name.txt"), CFile::modeCreate | CFile::modeWrite | CFile::typeText); //打开TXT文件
+	file.WriteString(StrText);//写入edit box 中的数据
+	file.Close();
+	}
+	catch (CFileException *e)
+	{
+	e->ReportError();
+	e->Delete();
+	}*/

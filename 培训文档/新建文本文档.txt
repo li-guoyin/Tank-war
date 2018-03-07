@@ -1,0 +1,77 @@
+// MA.cpp : 定义控制台应用程序的入口点。
+//
+  
+#include "stdafx.h"
+#include "Mario.h"
+#include "Flower.h"
+#include <opencv2/opencv.hpp> 
+void g_DrawBack(IplImage * back, IplImage *obj, CvPoint pos)
+{
+	if (back != NULL && obj != NULL)
+	{
+		for (int i = 0; i < obj->height; i++)
+		{
+			for (int j = 0; j < obj->width; j++)
+			{
+				CV_IMAGE_ELEM(back, uchar, i + pos.y, (j + pos.x) * 3 + 0) = CV_IMAGE_ELEM(obj, uchar, i, j * 3 + 0);
+				CV_IMAGE_ELEM(back, uchar, i + pos.y, (j + pos.x) * 3 + 1) = CV_IMAGE_ELEM(obj, uchar, i, j * 3 + 1);
+				CV_IMAGE_ELEM(back, uchar, i + pos.y, (j + pos.x) * 3 + 2) = CV_IMAGE_ELEM(obj, uchar, i, j * 3 + 2);
+
+			}
+		}
+	}
+	return;
+}
+
+bool g_IsDetect(CvRect r1, CvRect r2)
+{
+	int px1 = r1.x + r1.width / 2;
+	int py1 = r1.y + r1.height / 2;
+	int px2 = r2.x + r2.width / 2;
+	int py2 = r2.y + r2.height / 2;
+	int thread = (r1.width / 2 + r2.width/ 2)
+		*(r1.width / 2 + r2.width / 2);
+	int distance = (px1 - px2)*(px1 - px2) + (py1 - py2)*(py1 - py2);
+	if (distance <= thread)
+		return true;
+	else
+		return false;
+
+}
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	IplImage * BackImg;
+	IplImage * showImg;
+	CMario mario(200,480);
+	CFlower flower;
+
+	mario.SetImage();
+	flower.SetImage();
+	BackImg = cvLoadImage("./pic/back/bg.jpg", CV_LOAD_IMAGE_UNCHANGED);
+	showImg = cvCloneImage(BackImg);
+	cvNamedWindow("MarioGame", 1);
+	while (true)
+	{
+//		确保backimg是原始背景图片
+		cvCopy(BackImg, showImg, NULL);
+		mario.DrawBack(showImg);
+		flower.DrawBack(showImg);
+		cvShowImage("MarioGame", showImg);
+		int key=cvWaitKey(80);
+		//mario.Move(5, 4);
+		mario.Move(key);
+		mario.DetectCollision(&flower);
+		flower.Move();
+		
+	}
+		cvDestroyWindow("MarioGame");
+		cvReleaseImage(&BackImg);
+		cvReleaseImage(&showImg);
+		
+	
+	return 0;
+	
+}
+

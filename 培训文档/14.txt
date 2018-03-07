@@ -1,0 +1,8 @@
+char filename[40];
+for(i=0;i<2;i++)
+{
+sprintf_s(filname,"./pic/flower/%d.jpg",i)
+m_img[i] = cvloadimage(filname,1);
+}
+
+碰撞检策  （可以通过距离，重叠区域）

@@ -1,0 +1,88 @@
+#include "stdafx.h"
+#include "Mario.h"
+
+extern void g_DrawBack(IplImage * back, IplImage *obj, CvPoint pos);
+extern bool g_IsDetect(CvRect r1, CvRect r2);
+CMario::CMario()
+{
+	m_pos.x = 0;
+	m_pos.y = 480;
+	m_IsLive =true;
+}	
+
+CMario::CMario(int x,int y)
+{
+	m_pos.x = x;
+	m_pos.y = y;
+	m_IsLive = true;
+}
+
+
+CMario::~CMario()
+{
+	cvReleaseImage(&m_img);
+}
+
+
+void CMario::SetImage()
+{
+	m_img = cvLoadImage("./pic/mario/1.jpg", 1);
+}
+
+
+void CMario::Move(int sx, int sy)
+{
+	m_pos.x = m_pos.x + sx;
+	m_pos.y = m_pos.y + sy;
+}
+
+
+void CMario::DrawBack(IplImage * pBackImg)
+{
+	if (m_IsLive)
+	g_DrawBack(pBackImg, m_img, m_pos);
+}
+
+
+void CMario::Move(int pkey)
+{
+	switch (pkey)
+	{
+		case 'a':
+		case 'A':
+			m_pos.x = m_pos.x - 5;
+			break;
+		case 'd':
+		case 'D':
+			m_pos.x = m_pos.x + 5;
+			break;
+		default:
+			break;
+	}
+}
+
+
+void CMario::DetectCollision(CFlower * pflower)
+{
+	CvRect r1;
+	CvRect r2;
+	r1.x = m_pos.x;
+	r1.y = m_pos.y;
+	r1.height = m_img->height;
+	r1.width = m_img->width;
+
+	r2.x = pflower->m_pos.x;
+	r2.y = pflower->m_pos.y;
+	r2.height = 60;
+	r2.width = 60;
+	if (g_IsDetect(r1, r2))
+	{
+		pflower->m_IsLive = false;
+		//m_IsLive = false;
+	}
+	
+
+
+
+
+}

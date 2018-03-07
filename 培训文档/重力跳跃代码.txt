@@ -1,0 +1,83 @@
+#include "stdafx.h"
+#include "Mario.h"
+#include "Tools.h"
+
+
+CMario::CMario()
+	:m_IsRight(false)
+	, m_StateId(0)
+	, m_Jumptime(0)
+	, m_PosY(m_Pos.y)
+	, m_upordown(0)
+	, m_IsJump(0)
+	, m_JumpFlag(false)
+{
+	m_Pos.x = 100;
+	m_Pos.y = 400;
+	for (int i = 0; i < 10; i++)
+	{
+		m_Image[i] == NULL;
+	}
+}
+
+
+CMario::~CMario()
+{
+}
+
+
+void CMario::Move(char key)
+{
+	if ((key == 'a') || (key == 'A'))
+	{ 
+		m_Pos.x -= 5;
+		m_IsRight = false;
+		m_StateId++;
+	}
+	else if ((key == 'd') || (key == 'D'))
+	{
+		m_Pos.x += 5;
+		m_IsRight = true;
+		m_StateId++;
+	}
+	else if (key ==' '&&m_JumpFlag==false)
+	{
+		m_JumpFlag = true;
+		m_IsJump= 1;
+		m_PosY = m_Pos.y;
+		m_Jumptime = 0;
+	}
+	if (m_IsJump)
+	{
+		m_Jumptime++;
+		m_Pos.y -= 30* m_Jumptime-5*m_Jumptime*m_Jumptime;
+		if (m_Pos.y >= m_PosY)
+		{
+			m_IsJump = 0;
+			m_Pos.y = m_PosY;
+			m_JumpFlag = false;
+		}
+	}
+	if (m_StateId == 5)
+		m_StateId = 0;
+}
+
+
+void CMario::SetImage(IplImage  *Img[10])
+{
+	for (int i = 0; i < 10; i++)
+	{
+		m_pImage[i] = Img[i];
+	}
+}
+
+void CMario::Draw2Back(IplImage * pback)
+{
+	int no;
+	if (m_IsRight)
+		no = m_StateId;
+	else
+		no = 5 + m_StateId;
+	CTools::Cover_qudi(m_Pos.x, m_Pos.y, pback, m_pImage[no], 240, 240, 240);
+
+}

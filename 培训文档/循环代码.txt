@@ -1,0 +1,19 @@
+	/*int i,j;
+	mops = mops + speed;
+	if (mops<0)
+	{
+		mops = mops + bgclone->height;
+	}
+	for ( i=0;i<bg->height;i++)
+	{
+		int ti = (mops+i)%bg->height;
+		for ( j=0;j<bg->width;j++)
+		{
+			int b = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+0);
+			int g = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+1);
+			int r = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+2);
+			CV_IMAGE_ELEM(bg,uchar,i,j*3+0) = b;
+			CV_IMAGE_ELEM(bg,uchar,i,j*3+1) = g;
+			CV_IMAGE_ELEM(bg,uchar,i,j*3+2) = r;
+		}
+	}*/

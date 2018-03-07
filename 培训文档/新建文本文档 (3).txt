@@ -1,0 +1,56 @@
+#include "stdafx.h"
+#include "Flower.h"
+
+extern void g_DrawBack(IplImage * back, IplImage *obj, CvPoint pos);
+
+CFlower::CFlower()
+{
+	m_pos.x = 500;
+	m_pos.y = 480;
+	m_frameid = 0;
+	m_num = 0;
+	m_IsLive = true;
+}
+
+
+CFlower::~CFlower()
+{
+	cvReleaseImage(&m_img[0]);
+	cvReleaseImage(&m_img[1]);
+}
+
+
+void CFlower::SetImage()
+{
+	char filename[40];
+	for (int i = 0; i < 2; i++)
+	{
+		sprintf_s(filename,"./pic/flower/%d.jpg", i);
+		m_img[i] = cvLoadImage(filename, 1);
+	}
+
+}
+void CFlower::DrawBack(IplImage * pBackImg)
+{
+	if (m_IsLive)
+	{
+		g_DrawBack(pBackImg, m_img[m_frameid], m_pos);
+
+	}
+}
+
+
+void CFlower::Move()
+{
+	m_num++;
+	
+	if (m_num % 10 == 0)
+	{
+		m_frameid++;
+		if (m_frameid > 1)
+		{
+			m_frameid = 0;
+		}
+	}
+	
+}

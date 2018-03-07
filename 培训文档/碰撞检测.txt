@@ -1,0 +1,48 @@
+bool g_IsDetect(CvRect r1,CvRect r2)//碰撞检测；
+{
+	int px1 = r1.x + r1.width/2;  // 第一张图片的中心位置；
+	int py1 = r1.y + r1.height/2;
+	int px2 = r2.x + r2.width/2;  // 第二张图片的中心位置；
+	int py2 = r2.y + r2.height/2;
+	int thread = (r1.width/2 + r2.width)*(r1.width/2 + r2.width); //两张图片的碰撞检测条件；
+	int distence = (px1 - px2)*(px1 - px2) + (py1 - py2)*(py1 - py2);
+	if (distence <= thread)
+	{
+		return true;
+	}
+	else return false;
+
+}
+void CTanke::DetectCollision(CDiTanke *m_ditanke)
+{
+	CvRect r1;
+	CvRect r2;
+	r1.x = posx;
+	r1.y = posy;
+	r1.width = tanke->width;
+	r1.height = tanke->height;
+
+	r2.x = m_ditanke->GetnowDTkposx();
+	r2.y = m_ditanke->GetnowDTkposy();
+	printf("%d %d\n",r2.x,r2.y);
+	r2.width = 50;
+	r2.height = 50;
+
+	IsLive = g_IsDetect(r1,r2);
+}
+
+/*bool g_IsDetect(CvRect r1,CvRect r2)//碰撞检测；
+{
+	int px1 = r1.x + r1.width/2;  // 第一张图片的中心位置；
+	int py1 = r1.y + r1.height/2;
+	int px2 = r2.x + r2.width/2;  // 第二张图片的中心位置；
+	int py2 = r2.y + r2.height/2;
+	int thread = (r1.width/2 + r2.width)*(r1.width/2 + r2.width); //两张图片的碰撞检测条件；
+	int distence = (px1 - px2)*(px1 - px2) + (py1 - py2)*(py1 - py2);
+	if (distence <= thread)
+	{
+		return true;
+	}
+	else return false;
+
+}*/

@@ -1,0 +1,75 @@
+// test.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+# include "cv.h"
+# include "highgui.h"
+# include <stdio.h>
+
+void Run(IplImage *bg,IplImage *img)
+{
+	IplImage *bgclone;
+	bgclone = cvCloneImage(bg);
+	int speed = -1;
+	int mops = 0;
+	int i,j;
+	CvPoint pos = cvPoint(100,100);
+	while (1)
+	{
+		/*mops = mops + speed;
+		if (mops<0)
+		{
+			mops = mops + bgclone->height;
+		}
+		for ( i=0;i<bg->height;i++)
+		{
+			int ti = (mops+i)%bg->height;
+			for ( j=0;j<bg->width;j++)
+			{
+				int b = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+0);
+				int g = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+1);
+				int r = CV_IMAGE_ELEM(bgclone,uchar,ti,j*3+2);
+				CV_IMAGE_ELEM(bg,uchar,i,j*3+0) = b;
+				CV_IMAGE_ELEM(bg,uchar,i,j*3+1) = g;
+				CV_IMAGE_ELEM(bg,uchar,i,j*3+2) = r;
+			}
+		}*/
+		cvCopyImage(bgclone,bg,NULL);
+		for ( i=0;i<img->height;i++)
+		{
+			for ( j=0;j<img->width;j++)
+			{
+				int b = CV_IMAGE_ELEM(img,uchar,i,j*3+0);
+				int g = CV_IMAGE_ELEM(img,uchar,i,j*3+1);
+				int r = CV_IMAGE_ELEM(img,uchar,i,j*3+2);
+				CV_IMAGE_ELEM(bg,uchar,i+pos.y,(j+pos.x)*3+0)=b;
+				CV_IMAGE_ELEM(bg,uchar,i+pos.y,(j+pos.x)*3+1)=g;
+				CV_IMAGE_ELEM(bg,uchar,i+pos.y,(j+pos.x)*3+2)=r;
+			}
+		}
+		cvShowImage("map",bg);
+		cvWaitKey(80);
+		pos.x= pos.x+5;	
+		if (pos.x>bg->width-img->width)
+		{
+			pos.x=0;
+		}
+	}
+	cvReleaseImage(&bgclone);
+	cvReleaseImage(&bg);
+}
+
+int main(int argc, char* argv[])
+{
+	IplImage *bg ;
+	IplImage *img;
+	cvNamedWindow("map",1);//命名窗口
+	bg = cvLoadImage("2.jpg"); //加载图像
+	img = cvLoadImage("qi.png");
+	Run(bg,img);
+	cvWaitKey(0);
+	cvDestroyWindow("map");
+	cvReleaseImage(&bg);//必须写上释放内存
+	//cvReleaseImage(&bgclone);
+	return 0;
+}

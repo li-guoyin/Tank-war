@@ -1,0 +1,36 @@
+// test.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+# include "cv.h"
+# include "highgui.h"
+
+int main(int argc, char* argv[])
+{
+	IplImage *img1 ;//= cvCreateImage(cvSize(640,480),IPL_DEPTH_8U,1);//开辟空间
+	
+	cvNamedWindow("map");
+	cvNamedWindow("map1");
+	//img = cvCloneImage(img1);  //img1必须有值
+	img1 = cvLoadImage("2.jpg"); //加载图像
+	IplImage *img2 = cvCreateImage(cvGetSize(img1),img1->depth,img1->nChannels);//img2必须与img1的大小，深度，通道数相同
+	cvCopy(img1,img2,NULL);
+	cvShowImage("map",img1);
+	cvShowImage("map1",img2);
+	cvMoveWindow("map1",800,100);
+	//cvResizeWindow("data",200,600);
+	cvWaitKey(0);
+	cvDestroyWindow("map");
+	cvDestroyWindow("map1");
+	cvReleaseImage(&img1);//必须写上释放内存
+	cvReleaseImage(&img2);
+	/*if ((img = cvLoadImage("2.jpg",1))!=0)
+	{
+		cvNamedWindow("Image",1);
+		cvShowImage("Image",img);
+		cvWaitKey(0);
+		//cvDestroyAllWindows("");
+		cvReleaseImage(&img);
+	}*/
+	return 0;
+}
